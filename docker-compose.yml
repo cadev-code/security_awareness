@@ -1,0 +1,38 @@
+services:
+  db:
+    build: ./db
+    image: db_security_awareness
+    container_name: db_sa
+    ports:
+      - 3306:3306
+    networks:
+      - sa_network
+  server:
+    build: ./server
+    image: server_security_awareness
+    container_name: server_sa
+    ports:
+      - 8089:8089
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    networks:
+      - sa_network
+  client:
+    build: ./client
+    image: client_security_awareness
+    container_name: client_sa
+    ports:
+      - 5173:5173
+    volumes:
+      - ./client:/app
+    depends_on:
+      - server
+    networks:
+      - sa_network
+
+networks:
+  sa_network:
+    driver: bridge
