@@ -3,9 +3,12 @@ import { Sidebar } from '@/components';
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="min-h-svh w-full flex text-white">
+    <div
+      className="min-h-screen w-full flex text-white"
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <Sidebar />
-      {children}
+      <main className="flex-1 overflow-hidden">{children}</main>
     </div>
   );
 };

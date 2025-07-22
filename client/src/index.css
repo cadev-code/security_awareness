@@ -43,7 +43,7 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #243879;
+  --background: #000d04;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -117,4 +117,13 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* opcional si quieres ocultar scroll */
 }
