@@ -9,3 +9,5 @@ CREATE TABLE posts (
   `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 );
+
+ALTER TABLE posts ADD `availability` INT NOT NULL DEFAULT 0;

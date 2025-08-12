@@ -10,11 +10,11 @@ interface Page {
 export const Sidebar = () => {
   const pages: Page[] = [
     { text: 'Inicio', url: '/home', icon: Home },
-    { text: 'Podcast', url: '/podcast', icon: AudioWaveform },
+    { text: 'Temporada 1', url: '/podcast', icon: AudioWaveform },
   ];
 
   return (
-    <div className="h-screen w-32 flex flex-col justify-between p-3 border-blue-950/10">
+    <div className="h-screen w-38 flex flex-col justify-between p-3 border-blue-950/10">
       <div className="flex flex-col gap-1">
         {pages.map(({ text, url, icon: Icon }, i) => (
           <Link

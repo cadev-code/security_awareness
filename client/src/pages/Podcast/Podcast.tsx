@@ -6,6 +6,7 @@ export interface Podcast {
   id: number;
   title: string;
   filename: string;
+  availability: number;
 }
 
 export const Podcast = () => {

@@ -131,59 +131,74 @@ export const AudioPlayer = ({
   return (
     <div
       className="w-full p-4 border-2 rounded-lg flex justify-between"
-      style={{ borderColor: '#1296224d', backgroundColor: '#050a07' }}
+      style={{
+        borderColor: data.availability ? '#1296224d' : '#073b0d4d',
+        backgroundColor: '#050a07',
+      }}
     >
-      <div className="w-full flex flex-col gap-4 items-start">
-        <p className="font-medium text-xl">{data.title}</p>
-        <div className="w-full flex items-center gap-4">
-          {episodeToPlay.id === data.id ? (
-            <div
-              className="inline-block p-3 cursor-pointer hover:text-green-600"
-              onClick={() => onClickPlay(data.id)}
-            >
-              {isPlaying ? <Pause size={32} /> : <Play size={32} />}
-            </div>
-          ) : (
-            <div
-              className="bg-white/10 rounded-full inline-block p-3 cursor-pointer hover:text-green-600"
-              onClick={() => onClickPlay(data.id)}
-            >
-              <Play size={32} />
-            </div>
-          )}
-          {episodeToPlay.id === data.id && (
-            <div className="flex w-full gap-4">
-              <audio ref={audioRef} hidden onTimeUpdate={onTimeUpdateAudio} />
-              <input
-                className="w-full accent-green-300 cursor-pointer"
-                type="range"
-                value={timeLinePercent}
-                onChange={onChangeTimeLine}
-              />
-              <p className="w-26 text-xs">
-                {playedTime.played} - {playedTime.duration}
-              </p>
-              <div className="flex flex-row items-center gap-1">
-                <div onClick={onClickVolume} className="cursor-pointer">
-                  {volumePercent > 70 ? (
-                    <Volume2 size={24} />
-                  ) : volumePercent > 20 ? (
-                    <Volume1 size={24} />
-                  ) : (
-                    <Volume size={24} />
-                  )}
-                </div>
+      {data.availability === 1 ? (
+        <div className="w-full flex flex-col gap-4 items-start">
+          <p className="font-medium text-xl select-none">{data.title}</p>
+          <div className="w-full flex items-center gap-4">
+            {episodeToPlay.id === data.id ? (
+              <div
+                className="inline-block p-3 cursor-pointer hover:text-green-600"
+                onClick={() => onClickPlay(data.id)}
+              >
+                {isPlaying ? <Pause size={32} /> : <Play size={32} />}
+              </div>
+            ) : (
+              <div
+                className="bg-white/10 rounded-full inline-block p-3 cursor-pointer hover:text-green-600"
+                onClick={() => onClickPlay(data.id)}
+              >
+                <Play size={32} />
+              </div>
+            )}
+            {episodeToPlay.id === data.id && (
+              <div className="flex w-full gap-4">
+                <audio ref={audioRef} hidden onTimeUpdate={onTimeUpdateAudio} />
                 <input
                   className="w-full accent-green-300 cursor-pointer"
                   type="range"
-                  value={volumePercent}
-                  onChange={onChangeVolume}
+                  value={timeLinePercent}
+                  onChange={onChangeTimeLine}
                 />
+                <p className="w-26 text-xs">
+                  {playedTime.played} - {playedTime.duration}
+                </p>
+                <div className="flex flex-row items-center gap-1">
+                  <div onClick={onClickVolume} className="cursor-pointer">
+                    {volumePercent > 70 ? (
+                      <Volume2 size={24} />
+                    ) : volumePercent > 20 ? (
+                      <Volume1 size={24} />
+                    ) : (
+                      <Volume size={24} />
+                    )}
+                  </div>
+                  <input
+                    className="w-full accent-green-300 cursor-pointer"
+                    type="range"
+                    value={volumePercent}
+                    onChange={onChangeVolume}
+                  />
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="cursor-default select-none w-full flex flex-col gap-4 items-start">
+          <p className="font-medium text-xl text-gray-500">{data.title}</p>
+          <div
+            className="bg-white/10 rounded-full inline-block p-3 text-gray-500"
+            onClick={() => onClickPlay(data.id)}
+          >
+            <Play size={32} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
