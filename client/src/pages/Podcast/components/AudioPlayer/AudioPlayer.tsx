@@ -13,7 +13,11 @@ export const AudioPlayer = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
-  const onClickPlay = (id: number) => {
+  const onClickPlay = (id: number, availability: number) => {
+    if (availability === 0) {
+      return;
+    }
+
     if (episodeToPlay.id !== id) {
       setEpisodeToPlay({ id });
       return;
@@ -41,6 +45,7 @@ export const AudioPlayer = ({
     if (audioRef.current) {
       const duration = audioRef.current.duration;
       audioRef.current.currentTime = (duration * percent) / 100;
+      audioRef.current.play();
     }
   };
 
@@ -128,9 +133,25 @@ export const AudioPlayer = ({
     });
   }, [duration]);
 
+  const [showAlert, setShowAlert] = useState(false);
+
+  useEffect(() => {
+    if (
+      playedTime.played === playedTime.duration &&
+      playedTime.duration !== '00:00'
+    ) {
+      setShowAlert(true);
+
+      setTimeout(() => {
+        setShowAlert(false);
+        window.open(data.url_questions, '_blank');
+      }, 2000);
+    }
+  }, [playedTime.played]);
+
   return (
     <div
-      className="w-full p-4 border-2 rounded-lg flex justify-between"
+      className="w-full p-4 border-2 rounded-lg flex justify-between flex-col relative"
       style={{
         borderColor: data.availability ? '#1296224d' : '#073b0d4d',
         backgroundColor: '#050a07',
@@ -143,14 +164,14 @@ export const AudioPlayer = ({
             {episodeToPlay.id === data.id ? (
               <div
                 className="inline-block p-3 cursor-pointer hover:text-green-600"
-                onClick={() => onClickPlay(data.id)}
+                onClick={() => onClickPlay(data.id, data.availability)}
               >
                 {isPlaying ? <Pause size={32} /> : <Play size={32} />}
               </div>
             ) : (
               <div
                 className="bg-white/10 rounded-full inline-block p-3 cursor-pointer hover:text-green-600"
-                onClick={() => onClickPlay(data.id)}
+                onClick={() => onClickPlay(data.id, data.availability)}
               >
                 <Play size={32} />
               </div>
@@ -193,10 +214,26 @@ export const AudioPlayer = ({
           <p className="font-medium text-xl text-gray-500">{data.title}</p>
           <div
             className="bg-white/10 rounded-full inline-block p-3 text-gray-500"
-            onClick={() => onClickPlay(data.id)}
+            onClick={() => onClickPlay(data.id, data.availability)}
           >
             <Play size={32} />
           </div>
+        </div>
+      )}
+      {episodeToPlay.id === data.id && (
+        <div className="w-full mt-3">
+          <a
+            className="bg-green-700 rounded-md py-1 px-2 font-medium"
+            href={data.url_questions}
+            target="_blank"
+          >
+            <span>Responder Cuestionario</span>
+          </a>
+        </div>
+      )}
+      {episodeToPlay.id === data.id && showAlert && (
+        <div className="absolute bottom-2 right-2 bg-white rounded-md text-black px-3 py-1 select-none">
+          <p>Cargando cuestionario...</p>
         </div>
       )}
     </div>

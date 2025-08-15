@@ -11,3 +11,5 @@ CREATE TABLE posts (
 );
 
 ALTER TABLE posts ADD `availability` INT NOT NULL DEFAULT 0;
+
+ALTER TABLE posts ADD `url_questions` VARCHAR(255) NOT NULL DEFAULT "not-url";
