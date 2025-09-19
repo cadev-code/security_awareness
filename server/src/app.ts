@@ -42,6 +42,24 @@ app.get('/posts', async (req: Request, res: Response) => {
   });
 });
 
+app.get('/videos', async (req: Request, res: Response) => {
+  try {
+    const [result] = await pool.query('SELECT * FROM videos ORDER BY id ASC');
+    res.status(200).json({
+      error: null,
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error,
+    });
+  }
+
+  res.status(200).json({
+    error: null,
+  });
+});
+
 app.use(
   '/audio',
   express.static(path.join(__dirname, '..', 'public', 'podcasts')),
