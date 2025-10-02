@@ -4,15 +4,15 @@ import dotenv from 'dotenv';
 import { createPool } from 'mysql2/promise';
 import path from 'path';
 
+dotenv.config();
+
 const pool = createPool({
-  host: 'db',
+  host: process.env.DB_HOST,
   port: 3306,
-  user: 'root',
-  password: 'root',
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
   database: 'security_awareness',
 });
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 8089;
@@ -45,6 +45,26 @@ app.get('/posts', async (req: Request, res: Response) => {
 app.get('/videos', async (req: Request, res: Response) => {
   try {
     const [result] = await pool.query('SELECT * FROM videos ORDER BY id ASC');
+    res.status(200).json({
+      error: null,
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      error,
+    });
+  }
+
+  res.status(200).json({
+    error: null,
+  });
+});
+
+app.get('/newsletters', async (req: Request, res: Response) => {
+  try {
+    const [result] = await pool.query(
+      'SELECT * FROM newsletters ORDER BY id ASC',
+    );
     res.status(200).json({
       error: null,
       data: result,
