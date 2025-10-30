@@ -7,7 +7,7 @@ export interface Video {
   title: string;
   filename: string;
   cover: string;
-  availability: number;
+  availability: Date;
   url_questions: string;
 }
 
@@ -17,13 +17,13 @@ export interface VideoToPlayState {
   url_questions: string;
 }
 
-export const Videos = () => {
+export const Videos_Temporada3 = () => {
   const [videosData, setVideosData] = useState<Video[]>([]);
 
   useEffect(() => {
     const getVideosData = async () => {
       try {
-        const url = `${import.meta.env.VITE_URL_API}/videos`;
+        const url = `${import.meta.env.VITE_URL_API}/videos_temporada3`;
         const response = await axios.get(url);
         setVideosData(response.data.data);
       } catch (error) {
@@ -60,17 +60,20 @@ export const Videos = () => {
     <div className="w-full h-[calc(100vh)] grid grid-cols-2 xl:grid-cols-3 grid-rows-3 py-18 px-48 gap-x-24 gap-y-52 relative">
       <img
         className="absolute select-none z-0 w-full h-full"
-        src="/images/temporada2-fondo.jpg"
+        src="/images/temporada3-fondo.jpg"
         draggable={false}
       />
       {videosData.map((data, i) => (
         <div
           key={i}
           className="w-full z-2"
-          onClick={() =>
-            data.availability &&
-            openVideoPlayer(data.filename, data.url_questions)
-          }
+          onClick={() => {
+            const today = new Date();
+            const formattedAvailability = new Date(data.availability);
+            if (today >= formattedAvailability) {
+              openVideoPlayer(data.filename, data.url_questions);
+            }
+          }}
         >
           <VideoCard key={i} data={data} />
         </div>
@@ -90,8 +93,8 @@ export const Videos = () => {
         draggable={false}
       />
       <img
-        className="w-48 [@media(min-width:1400px)]:w-80 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
-        src="/images/logo-temporada2.png"
+        className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
+        src="/images/logo-temporada3.png"
         draggable={false}
       />
     </div>

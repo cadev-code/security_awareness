@@ -9,13 +9,13 @@ export const VideoCard = ({ data }: { data: Video }) => {
       <div className="w-full relative">
         <img
           className="w-full rounded-lg"
-          src={`http://172.15.101.77:9080/video/covers/${data.cover}`}
+          src={`${import.meta.env.VITE_URL_STATIC}/video/covers/${data.cover}`}
           style={{ opacity: data.availability === 1 ? '1' : '0.4' }}
           draggable={false}
         />
         {data.availability === 1 && (
-          <div className="w-full h-full absolute top-0 flex justify-center items-center">
-            <div className="bg-black/50 p-4 rounded-full text-cyan-300 transition-opacity opacity-0 group-hover:opacity-100">
+          <div className="w-full h-full absolute top-0 left-0 flex justify-center items-center pointer-events-none">
+            <div className="bg-black/50 p-4 rounded-full text-cyan-300 transition-opacity opacity-0 group-hover:opacity-100 pointer-events-auto">
               <Play size={38} />
             </div>
           </div>

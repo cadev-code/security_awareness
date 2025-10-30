@@ -1,5 +1,10 @@
-import { AudioWaveform, Clapperboard, Home, LucideIcon } from 'lucide-react';
-import { useEffect } from 'react';
+import {
+  AudioWaveform,
+  Clapperboard,
+  Home,
+  LucideIcon,
+  Newspaper,
+} from 'lucide-react';
 import { NavLink, useLocation } from 'react-router';
 
 interface Page {
@@ -13,20 +18,24 @@ export const Sidebar = () => {
     { text: 'Inicio', url: '/home', icon: Home },
     { text: 'Temporada 1', url: '/temporada-1', icon: AudioWaveform },
     { text: 'Temporada 2', url: '/temporada-2', icon: Clapperboard },
+    { text: 'Oct SI', url: '/oct-si', icon: Newspaper },
+    { text: 'Temporada 3', url: '/temporada-3', icon: Clapperboard },
   ];
 
   const location = useLocation();
-
-  useEffect(() => {
-    console.log(location.pathname);
-  }, [location]);
 
   return (
     <div
       className="h-screen w-40 flex flex-col justify-between p-3 border-blue-950/10"
       style={{
         backgroundColor:
-          location.pathname === '/temporada-2' ? '#010302' : '#000d04',
+          location.pathname === '/temporada-2'
+            ? '#010302'
+            : location.pathname === '/oct-si'
+              ? '#00252e'
+              : location.pathname === '/temporada-3'
+                ? '#004fa1'
+                : '#000d04',
       }}
     >
       <div className="flex flex-col gap-1">
