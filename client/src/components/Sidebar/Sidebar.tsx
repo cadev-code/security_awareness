@@ -2,6 +2,7 @@ import {
   AudioWaveform,
   Clapperboard,
   Home,
+  Lock,
   LucideIcon,
   Newspaper,
 } from 'lucide-react';
@@ -20,6 +21,8 @@ export const Sidebar = () => {
     { text: 'Temporada 2', url: '/temporada-2', icon: Clapperboard },
     { text: 'Oct SI', url: '/oct-si', icon: Newspaper },
     { text: 'Temporada 3', url: '/temporada-3', icon: Clapperboard },
+    { text: 'PSSWRD', url: '/psswrd', icon: Lock },
+    { text: 'Temporada 4', url: '/temporada-4', icon: Clapperboard },
   ];
 
   const location = useLocation();
@@ -35,7 +38,11 @@ export const Sidebar = () => {
               ? '#00252e'
               : location.pathname === '/temporada-3'
                 ? '#004fa1'
-                : '#000d04',
+                : location.pathname === '/psswrd'
+                  ? '#013d83'
+                  : location.pathname === '/temporada-4'
+                    ? '#001449'
+                    : '#000d04',
       }}
     >
       <div className="flex flex-col gap-1">
@@ -53,7 +60,7 @@ export const Sidebar = () => {
         ))}
       </div>
       <div className="text-xs text-gray-400 select-none">
-        <p>© 2025</p>
+        <p>© Julio 2025</p>
         <p>Seguridad de la Información.</p>
         <p>SmartCenter.</p>
         <p>Todos los derechos reservados.</p>

@@ -34,7 +34,29 @@ CREATE TABLE newsletters (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE videos_temporada2 (
+CREATE TABLE videos_temporada3 (
+  `id` INT AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `filename` VARCHAR(255) NOT NULL,
+  `cover` VARCHAR (255) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `availability` DATE NOT NULL,
+  `url_questions` VARCHAR(255) NOT NULL DEFAULT "not-url",
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE videos_psswrd (
+  `id` INT AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `filename` VARCHAR(255) NOT NULL,
+  `cover` VARCHAR (255) NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `availability` DATE NOT NULL,
+  `url_questions` VARCHAR(255) NOT NULL DEFAULT "not-url",
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE videos_temporada4 (
   `id` INT AUTO_INCREMENT,
   `title` VARCHAR(255) NOT NULL,
   `filename` VARCHAR(255) NOT NULL,
