@@ -5,6 +5,7 @@ import {
   Lock,
   LucideIcon,
   Newspaper,
+  ScrollText,
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router';
 
@@ -17,6 +18,7 @@ interface Page {
 export const Sidebar = () => {
   const pages: Page[] = [
     { text: 'Inicio', url: '/home', icon: Home },
+    { text: 'Seg. Informa', url: '/information', icon: ScrollText },
     { text: 'Temporada 1', url: '/temporada-1', icon: AudioWaveform },
     { text: 'Temporada 2', url: '/temporada-2', icon: Clapperboard },
     { text: 'Oct SI', url: '/oct-si', icon: Newspaper },
@@ -42,7 +44,9 @@ export const Sidebar = () => {
                   ? '#013d83'
                   : location.pathname === '/temporada-4'
                     ? '#001449'
-                    : '#000d04',
+                    : location.pathname === '/information'
+                      ? '#00092e'
+                      : '#000d04',
       }}
     >
       <div className="flex flex-col gap-1">
