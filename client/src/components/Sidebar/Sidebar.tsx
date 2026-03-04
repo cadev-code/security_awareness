@@ -25,6 +25,7 @@ export const Sidebar = () => {
     { text: 'Temporada 3', url: '/temporada-3', icon: Clapperboard },
     { text: 'PSSWRD', url: '/psswrd', icon: Lock },
     { text: 'Temporada 4', url: '/temporada-4', icon: Clapperboard },
+    { text: 'Temporada 5', url: '/temporada-5', icon: Clapperboard },
   ];
 
   const location = useLocation();
@@ -44,9 +45,11 @@ export const Sidebar = () => {
                   ? '#013d83'
                   : location.pathname === '/temporada-4'
                     ? '#001449'
-                    : location.pathname === '/information'
-                      ? '#00092e'
-                      : '#000d04',
+                    : location.pathname === '/temporada-5'
+                      ? '#002a58'
+                      : location.pathname === '/information'
+                        ? '#00092e'
+                        : '#000d04',
       }}
     >
       <div className="flex flex-col gap-1">
