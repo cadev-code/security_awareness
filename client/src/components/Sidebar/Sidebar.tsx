@@ -7,7 +7,7 @@ import {
   Newspaper,
   ScrollText,
 } from 'lucide-react';
-import { NavLink, useLocation } from 'react-router';
+import { NavLink, useLocation, useSearchParams } from 'react-router';
 
 interface Page {
   text: string;
@@ -29,6 +29,8 @@ export const Sidebar = () => {
   ];
 
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const temporada5Page = Number(searchParams.get('page') || 1);
 
   return (
     <div
@@ -46,7 +48,9 @@ export const Sidebar = () => {
                   : location.pathname === '/temporada-4'
                     ? '#001449'
                     : location.pathname === '/temporada-5'
-                      ? '#002a58'
+                      ? temporada5Page > 1
+                        ? '#00275a'
+                        : '#002a58'
                       : location.pathname === '/information'
                         ? '#00092e'
                         : '#000d04',

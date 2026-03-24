@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 import { VideoCard, VideoPlayer } from './components';
 import { ImageVisualizer } from './components/ImageVisualizer/ImageVisualizer';
+import { SquareChevronLeft, SquareChevronRight } from 'lucide-react';
 
 export interface File {
   id: number;
@@ -20,6 +22,11 @@ export interface VideoToPlayState {
 
 export const Videos_Temporada5 = () => {
   const [videosData, setVideosData] = useState<File[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get('page') || 1);
+
+  const itemsPerPage = 4;
+  const totalPages = Math.ceil(videosData.length / itemsPerPage);
 
   useEffect(() => {
     const getVideosData = async () => {
@@ -84,28 +91,54 @@ export const Videos_Temporada5 = () => {
     <div className="w-full h-[calc(100vh)] flex items-center justify-center relative gap-12">
       <img
         className="absolute select-none z-0 w-full h-full left-0 top-0"
-        src="/images/temporada5-fondo.jpg"
+        src={`/images/${page !== totalPages ? 'temporada5' : 'temporada5_parte2'}-fondo.jpg`}
         draggable={false}
       />
-      {videosData.map((data, i) => (
+      {page > 1 && (
         <div
-          key={i}
-          className="z-2"
+          className="z-2 bg-[#012559] hover:text-cyan-200 rounded-lg cursor-pointer transition-all hover:scale-110"
           onClick={() => {
-            const today = new Date();
-            const formattedAvailability = new Date(data.availability);
-            if (today >= formattedAvailability) {
-              if (data.title !== 'Exploradores de Riesgos (Bonus)') {
-                openVideoPlayer(data.filename, data.url_questions);
-              } else {
-                openImageVisualizer(data);
-              }
+            if (page > 1) {
+              setSearchParams({ page: String(page - 1) });
             }
           }}
         >
-          <VideoCard key={i} data={data} />
+          <SquareChevronLeft size={64} />
         </div>
-      ))}
+      )}
+      {videosData
+        .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+        .map((data, i) => (
+          <div
+            key={i}
+            className="z-2"
+            onClick={() => {
+              const today = new Date();
+              const formattedAvailability = new Date(data.availability);
+              if (today >= formattedAvailability) {
+                if (data.title !== 'Exploradores de Riesgos (Bonus)') {
+                  openVideoPlayer(data.filename, data.url_questions);
+                } else {
+                  openImageVisualizer(data);
+                }
+              }
+            }}
+          >
+            <VideoCard key={i} data={data} />
+          </div>
+        ))}
+      {page < totalPages && (
+        <div
+          className="z-2 bg-[#002a58] hover:text-cyan-200 rounded-lg cursor-pointer transition-all hover:scale-110"
+          onClick={() => {
+            if (page < totalPages) {
+              setSearchParams({ page: String(page + 1) });
+            }
+          }}
+        >
+          <SquareChevronRight size={64} />
+        </div>
+      )}
       {videoToPlay.reproduce && (
         <div className="fixed top-0 left-0 w-full h-[calc(100vh)] bg-black/60 flex justify-center items-center z-2">
           <VideoPlayer
@@ -125,7 +158,7 @@ export const Videos_Temporada5 = () => {
       />
       <img
         className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
-        src="/images/logo-temporada5.png"
+        src={`/images/logo-${page !== totalPages ? 'temporada5' : 'temporada5_parte2'}.png`}
         draggable={false}
       />
     </div>

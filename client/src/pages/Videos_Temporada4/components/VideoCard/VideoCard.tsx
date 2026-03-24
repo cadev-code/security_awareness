@@ -4,8 +4,12 @@ export const VideoCard = ({ data }: { data: Video }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Reset hours to compare only dates
 
-  const availabilityDate = new Date(data.availability);
-  availabilityDate.setHours(0, 0, 0, 0); // Reset hours to compare only dates
+  const rawAvailability = new Date(data.availability);
+  const availabilityDate = new Date(
+    rawAvailability.getUTCFullYear(),
+    rawAvailability.getUTCMonth(),
+    rawAvailability.getUTCDate(),
+  );
 
   const formatDate = new Date(data.availability).toLocaleDateString('es-Es', {
     day: 'numeric',
