@@ -128,10 +128,10 @@ export const createAdminRouter = (pool: Pool): Router => {
         [
           name || null, slug || null, icon || null, type || null,
           layout || null, card_style || null,
-          bg_image !== undefined ? bg_image : undefined,
-          section_logo !== undefined ? section_logo : undefined,
+          bg_image,
+          section_logo,
           color_theme || null,
-          items_per_page !== undefined ? items_per_page : undefined,
+          items_per_page,
           sort_order ?? null, visible ?? null,
           id,
         ],

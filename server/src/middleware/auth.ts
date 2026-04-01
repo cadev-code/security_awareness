@@ -18,7 +18,12 @@ export const authMiddleware = (
   }
 
   const token = authHeader.slice(7);
-  const secret = process.env.JWT_SECRET || 'changeme_secret';
+  const secret = process.env.JWT_SECRET;
+
+  if (!secret) {
+    res.status(500).json({ error: 'Configuración del servidor incompleta' });
+    return;
+  }
 
   try {
     const payload = jwt.verify(token, secret) as { id: number };

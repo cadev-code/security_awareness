@@ -10,7 +10,7 @@ const isAvailable = (availability: string): boolean => {
 };
 
 const formatDate = (availability: string): string =>
-  new Date(availability).toLocaleDateString('es-Es', {
+  new Date(availability).toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'long',
     timeZone: 'UTC',

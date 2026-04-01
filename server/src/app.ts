@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { createPool } from 'mysql2/promise';
 import path from 'path';
+import rateLimit from 'express-rate-limit';
 import { createAuthRouter } from './routes/auth';
 import { createAdminRouter } from './routes/admin';
 import { createPublicRouter } from './routes/public';
@@ -36,6 +37,26 @@ app.use(
   '/audio',
   express.static(path.join(__dirname, '..', 'public', 'podcasts')),
 );
+
+// ── Rate limiting ─────────────────────────────────────────────
+
+// Strict limiter for the login endpoint
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' },
+});
+
+// General limiter for admin/public API routes
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas solicitudes. Intenta de nuevo en un momento.' },
+});
 
 // ── Legacy endpoints (kept for backward compatibility) ────────
 
@@ -116,8 +137,8 @@ app.get('/videos_temporada5', async (req: Request, res: Response) => {
 
 // ── New CMS routes ────────────────────────────────────────────
 
-app.use('/admin/auth', createAuthRouter(pool));
-app.use('/admin', authMiddleware, createAdminRouter(pool));
-app.use('/', createPublicRouter(pool));
+app.use('/admin/auth', authLimiter, createAuthRouter(pool));
+app.use('/admin', apiLimiter, authMiddleware, createAdminRouter(pool));
+app.use('/', apiLimiter, createPublicRouter(pool));
 
 app.listen(PORT, () => {});

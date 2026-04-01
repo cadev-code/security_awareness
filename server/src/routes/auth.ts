@@ -17,6 +17,12 @@ export const createAuthRouter = (pool: Pool): Router => {
       return;
     }
 
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      res.status(500).json({ error: 'Configuración del servidor incompleta' });
+      return;
+    }
+
     try {
       const [rows] = await pool.query(
         'SELECT id, password_hash FROM admin_users WHERE username = ?',
@@ -36,7 +42,6 @@ export const createAuthRouter = (pool: Pool): Router => {
         return;
       }
 
-      const secret = process.env.JWT_SECRET || 'changeme_secret';
       const token = jwt.sign({ id: user.id }, secret, { expiresIn: '8h' });
       res.json({ token });
     } catch (error) {
