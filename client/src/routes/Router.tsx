@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router';
 
+import { Login } from '@/Admin/pages/Login';
+
 import { Home, Podcast, Videos } from '@/pages';
 import { Information } from '@/pages/Information/Information';
 import { NewsLetters } from '@/pages/NewsLetter/NewsLetter';
@@ -11,6 +13,8 @@ import { Videos_Temporada5 } from '@/pages/Videos_Temporada5/Videos_Temporada5';
 export const Router = () => {
   return (
     <Routes>
+      <Route path="protected/admin/login" element={<Login />} />
+
       <Route path="home" element={<Home />} />
       <Route path="information" element={<Information />} />
       <Route path="temporada-1" element={<Podcast />} />
