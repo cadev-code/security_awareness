@@ -77,3 +77,10 @@ CREATE TABLE videos_temporada5 (
   `url_questions` VARCHAR(255) NOT NULL DEFAULT "not-url",
   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE admin_users (
+  `id` INT AUTO_INCREMENT,
+  `user` VARCHAR(60),
+  `passwordHash` VARCHAR (255),
+  PRIMARY KEY (`id`)
+);
