@@ -1,5 +1,5 @@
 # api/Dockerfile
-FROM node:20-alpine
+FROM node:20.12.1-alpine3.18
 
 # Instalar dependencias necesarias para algunas librerías de Node
 RUN apk add --no-cache libc6-compat
