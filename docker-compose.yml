@@ -20,6 +20,21 @@ services:
       - db
     networks:
       - sa_network
+  api:
+    build: ./api
+    image: api_security_awareness
+    container_name: api_sa
+    ports:
+      - 3000:3000
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+    networks:
+      - sa_network
   client:
     build: ./client
     image: client_security_awareness
