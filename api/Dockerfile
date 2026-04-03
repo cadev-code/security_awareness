@@ -11,6 +11,10 @@ COPY package*.json ./
 
 RUN npm install
 
+# Copiar schema.prisma y generar cliente prisma
+COPY prisma ./prisma
+RUN npx prisma generate
+
 # Copiamos el resto del código del proyecto
 COPY . .
 
@@ -18,4 +22,4 @@ COPY . .
 EXPOSE 3000
 
 # Comando para desarrollo con recarga automática
-CMD ["npm", "run", "start:dev"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:dev"]
