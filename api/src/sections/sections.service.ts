@@ -16,7 +16,9 @@ export class SectionsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} section`;
+    return this.prisma.section.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateSectionDto: UpdateSectionDto) {
