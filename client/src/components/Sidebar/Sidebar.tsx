@@ -21,8 +21,6 @@ export const Sidebar = () => {
       const url = `${import.meta.env.VITE_URL_API}/sections`;
       const response = (await axios.get(url)) as SectionResponse;
 
-      console.log(response);
-
       if (response.data && response.data.length > 0) {
         setSections(response.data);
       }
