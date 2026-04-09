@@ -36,6 +36,7 @@ export const Sidebar = () => {
   const pages: Page[] = [
     { text: 'Inicio', url: '/home', icon: Home },
     { text: 'Seg. Informa', url: '/information', icon: ScrollText },
+    { text: 'Temporada 1', url: '/podcast' },
     ...sections.map((section) => ({
       text: section.name,
       url: `/section?id=${section.id}`,
