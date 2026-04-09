@@ -1,59 +1,62 @@
-import {
-  AudioWaveform,
-  Clapperboard,
-  Home,
-  Lock,
-  LucideIcon,
-  Newspaper,
-  ScrollText,
-} from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation, useSearchParams } from 'react-router';
+
+import type { Section, SectionResponse } from '@/types/section.types';
+
+import axios from 'axios';
+
+import { Home, LucideIcon, ScrollText } from 'lucide-react';
 
 interface Page {
   text: string;
   url: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
 }
 
 export const Sidebar = () => {
+  const [sections, setSections] = useState<Section[]>([]);
+
+  const getSections = async () => {
+    try {
+      const url = `${import.meta.env.VITE_URL_API}/sections`;
+      const response = (await axios.get(url)) as SectionResponse;
+
+      console.log(response);
+
+      if (response.data && response.data.length > 0) {
+        setSections(response.data);
+      }
+    } catch (error) {
+      console.error('Error al obtener secciones:', error);
+    }
+  };
+
+  useEffect(() => {
+    getSections();
+  }, []);
+
   const pages: Page[] = [
     { text: 'Inicio', url: '/home', icon: Home },
     { text: 'Seg. Informa', url: '/information', icon: ScrollText },
-    { text: 'Temporada 1', url: '/temporada-1', icon: AudioWaveform },
-    { text: 'Temporada 2', url: '/temporada-2', icon: Clapperboard },
-    { text: 'Oct SI', url: '/oct-si', icon: Newspaper },
-    { text: 'Temporada 3', url: '/temporada-3', icon: Clapperboard },
-    { text: 'PSSWRD', url: '/psswrd', icon: Lock },
-    { text: 'Temporada 4', url: '/temporada-4', icon: Clapperboard },
-    { text: 'Temporada 5', url: '/temporada-5', icon: Clapperboard },
+    ...sections.map((section) => ({
+      text: section.name,
+      url: `/section?id=${section.id}`,
+    })),
   ];
 
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const temporada5Page = Number(searchParams.get('page') || 1);
 
   return (
     <div
       className="h-screen w-40 flex flex-col justify-between p-3 border-blue-950/10"
       style={{
-        backgroundColor:
-          location.pathname === '/temporada-2'
-            ? '#010302'
-            : location.pathname === '/oct-si'
-              ? '#00252e'
-              : location.pathname === '/temporada-3'
-                ? '#004fa1'
-                : location.pathname === '/psswrd'
-                  ? '#013d83'
-                  : location.pathname === '/temporada-4'
-                    ? '#001449'
-                    : location.pathname === '/temporada-5'
-                      ? temporada5Page > 1
-                        ? '#00275a'
-                        : '#002a58'
-                      : location.pathname === '/information'
-                        ? '#00092e'
-                        : '#000d04',
+        backgroundColor: location.pathname.startsWith('/section')
+          ? sections.find((s) => s.id === Number(searchParams.get('id')))
+              ?.bg_color
+          : location.pathname === '/information'
+            ? '#00092e'
+            : '#000d04',
       }}
     >
       <div className="flex flex-col gap-1">
@@ -61,11 +64,11 @@ export const Sidebar = () => {
           <NavLink
             key={i}
             className={({ isActive }) =>
-              `font-medium hover:bg-white/10 p-1 rounded flex gap-2 items-center ${isActive && 'bg-white/10'}`
+              `font-medium hover:bg-white/10 p-1 rounded flex gap-2 items-center ${isActive && 'bg-white/10'} ${!Icon && 'pl-2'}`
             }
             to={url}
           >
-            <Icon size={18} />
+            {Icon && <Icon size={18} />}
             {text}
           </NavLink>
         ))}
