@@ -91,7 +91,7 @@ export const Videos_Temporada5 = () => {
     <div className="w-full h-[calc(100vh)] flex items-center justify-center relative gap-12">
       <img
         className="absolute select-none z-0 w-full h-full left-0 top-0"
-        src={`/images/${page !== totalPages ? 'temporada5' : 'temporada5_parte2'}-fondo.jpg`}
+        src={`/images/${page !== 2 ? 'temporada5' : 'temporada5_parte2'}-fondo.jpg`}
         draggable={false}
       />
       {page > 1 && (
@@ -116,7 +116,10 @@ export const Videos_Temporada5 = () => {
               const today = new Date();
               const formattedAvailability = new Date(data.availability);
               if (today >= formattedAvailability) {
-                if (data.title !== 'Exploradores de Riesgos (Bonus)') {
+                if (
+                  data.title !== 'Exploradores de Riesgos (Bonus)' &&
+                  data.title !== 'Bonus 2: Newsletter'
+                ) {
                   openVideoPlayer(data.filename, data.url_questions);
                 } else {
                   openImageVisualizer(data);
@@ -158,7 +161,7 @@ export const Videos_Temporada5 = () => {
       />
       <img
         className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
-        src={`/images/logo-${page !== totalPages ? 'temporada5' : 'temporada5_parte2'}.png`}
+        src={`/images/logo-${page !== 2 ? 'temporada5' : 'temporada5_parte2'}.png`}
         draggable={false}
       />
     </div>
