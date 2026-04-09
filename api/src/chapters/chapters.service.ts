@@ -5,12 +5,14 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ChaptersService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createChapterDto: CreateChapterDto) {
     return 'This action adds a new chapter';
   }
 
   findAll() {
-    return `This action returns all chapters`;
+    return this.prisma.chapter.findMany();
   }
 
   findOne(id: number) {
