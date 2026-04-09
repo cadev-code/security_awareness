@@ -28,11 +28,13 @@ export const Section = () => {
 
   return (
     <div className="w-full h-[calc(100vh)] flex items-center justify-center relative gap-12">
-      <img
-        className="absolute select-none z-0 w-full h-full left-0 top-0"
-        src={`${import.meta.env.VITE_URL_STATIC}/backgrounds/${section?.bg_url}`}
-        draggable={false}
-      />
+      {section?.bg_url && (
+        <img
+          className="absolute select-none z-0 w-full h-full left-0 top-0"
+          src={`${import.meta.env.VITE_URL_STATIC}/backgrounds/${section?.bg_url}`}
+          draggable={false}
+        />
+      )}
       {/* {page > 1 && (
         <div
           className="z-2 bg-[#012559] hover:text-cyan-200 rounded-lg cursor-pointer transition-all hover:scale-110"
@@ -98,11 +100,16 @@ export const Section = () => {
         src="/images/logo.png"
         draggable={false}
       />
-      <img
-        className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
-        src={`${import.meta.env.VITE_URL_STATIC}/subtitles/${section?.flag_url}`}
-        draggable={false}
-      />
+      {section?.flag_url && (
+        <img
+          className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
+          src={`${import.meta.env.VITE_URL_STATIC}/subtitles/${section?.flag_url}`}
+          draggable={false}
+          onError={(e) => {
+            e.currentTarget.style.display = 'none';
+          }}
+        />
+      )}
     </div>
   );
 };
