@@ -31,6 +31,7 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=mysql://root:root@db_sa:3306/security_awareness
     depends_on:
       - db
     networks:
