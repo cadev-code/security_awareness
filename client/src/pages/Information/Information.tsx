@@ -24,6 +24,7 @@ export const Information = () => {
       <div className="h-[30vh] flex w-full justify-around relative">
         {links.map(({ href, src }) => (
           <a
+            key={href}
             className="transition-transform hover:scale-108"
             href={href}
             target="_blank"
