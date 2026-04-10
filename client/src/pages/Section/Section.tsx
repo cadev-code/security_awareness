@@ -4,9 +4,11 @@ import { useSearchParams } from 'react-router';
 import axios from 'axios';
 
 import type { Section as SectionType } from '@/types/section.types';
+import type { Chapter } from '@/types/chapter.types';
 
 export const Section = () => {
   const [section, setSection] = useState<SectionType | null>(null);
+  const [chapters, setChapters] = useState<Chapter[]>([]);
 
   const [searchParams] = useSearchParams();
   const sectionId = Number(searchParams.get('id'));
@@ -25,6 +27,23 @@ export const Section = () => {
   useEffect(() => {
     getSection(sectionId);
   }, [sectionId]);
+
+  const getChapters = async (sectionId: number) => {
+    try {
+      const url = `${import.meta.env.VITE_URL_API}/chapters/${sectionId}`;
+      const response = await axios.get(url);
+      setChapters(response.data);
+    } catch (error) {
+      setChapters([]);
+      console.error('Error al obtener capítulos:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (section) {
+      getChapters(section.id);
+    }
+  }, [section]);
 
   return (
     <div className="w-full h-[calc(100vh)] flex items-center justify-center relative gap-12">
