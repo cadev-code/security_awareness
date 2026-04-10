@@ -19,17 +19,22 @@ model Section {
   bg_color   String
   flag_url   String
   created_at DateTime @default(now())
+
+  Chapter Chapter[]
 }
 
 model Chapter {
   id           Int      @id @default(autoincrement())
+  section_id   Int
   name         String   @unique
   showName     Boolean  @default(false)
   cover_url    String
   file_url     String
   file_type    FileType
   availability DateTime
-  created_at    DateTime @default(now())
+  created_at   DateTime @default(now())
+
+  Section Section @relation(fields: [section_id], references: [id])
 }
 
 enum FileType {
