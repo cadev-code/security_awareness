@@ -36,7 +36,7 @@ export const Sidebar = () => {
   const pages: Page[] = [
     { text: 'Inicio', url: '/home', icon: Home },
     { text: 'Seg. Informa', url: '/information', icon: ScrollText },
-    { text: 'Temporada 1', url: '/podcast' },
+    { text: 'Temporada 1', url: '/temporada-1' },
     ...sections.map((section) => ({
       text: section.name,
       url: `/section?id=${section.id}`,
@@ -63,7 +63,14 @@ export const Sidebar = () => {
           <NavLink
             key={i}
             className={({ isActive }) =>
-              `font-medium hover:bg-white/10 p-1 rounded flex gap-2 items-center ${isActive && 'bg-white/10'} ${!Icon && 'pl-2'}`
+              `font-medium hover:bg-white/10 p-1 rounded flex gap-2 items-center ${!Icon && 'pl-2'} ${
+                isActive
+                  ? location.pathname.startsWith('/section')
+                    ? url.includes(searchParams.get('id') || '') &&
+                      'bg-white/10'
+                    : 'bg-white/10'
+                  : ''
+              }`
             }
             to={url}
           >
