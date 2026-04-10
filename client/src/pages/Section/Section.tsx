@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import type { Section as SectionType } from '@/types/section.types';
 import type { Chapter } from '@/types/chapter.types';
+import { ChapterCard } from './ChapterCard/ChapterCard';
 
 export const Section = () => {
   const [section, setSection] = useState<SectionType | null>(null);
@@ -66,30 +67,28 @@ export const Section = () => {
           <SquareChevronLeft size={64} />
         </div>
       )} */}
-      {/* {videosData
-        .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-        .map((data, i) => (
-          <div
-            key={i}
-            className="z-2"
-            onClick={() => {
-              const today = new Date();
-              const formattedAvailability = new Date(data.availability);
-              if (today >= formattedAvailability) {
-                if (
-                  data.title !== 'Exploradores de Riesgos (Bonus)' &&
-                  data.title !== 'Bonus 2: Newsletter'
-                ) {
-                  openVideoPlayer(data.filename, data.url_questions);
-                } else {
-                  openImageVisualizer(data);
-                }
-              }
-            }}
-          >
-            <VideoCard key={i} data={data} />
-          </div>
-        ))} */}
+      {chapters.map((chapter) => (
+        <div
+          key={chapter.id}
+          className="z-2"
+          onClick={() => {
+            const today = new Date();
+            const formattedAvailability = new Date(chapter.availability);
+            if (today >= formattedAvailability) {
+              // if (
+              //   data.title !== 'Exploradores de Riesgos (Bonus)' &&
+              //   data.title !== 'Bonus 2: Newsletter'
+              // ) {
+              //   openVideoPlayer(data.filename, data.url_questions);
+              // } else {
+              //   openImageVisualizer(data);
+              // }
+            }
+          }}
+        >
+          <ChapterCard chapter={chapter} />
+        </div>
+      ))}
       {/* {page < totalPages && (
         <div
           className="z-2 bg-[#002a58] hover:text-cyan-200 rounded-lg cursor-pointer transition-all hover:scale-110"
