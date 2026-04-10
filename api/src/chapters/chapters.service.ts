@@ -16,7 +16,11 @@ export class ChaptersService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} chapter`;
+    return this.prisma.chapter.findMany({
+      where: {
+        section_id: id,
+      },
+    });
   }
 
   update(id: number, updateChapterDto: UpdateChapterDto) {
