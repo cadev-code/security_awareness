@@ -55,7 +55,7 @@ export const AudioPlayer = ({
     setTimeLinePercent(0);
     setVolumePercent(80);
     if (episodeToPlay.id === data.id && audioRef.current) {
-      const url = `${import.meta.env.VITE_URL_API}/audio/${data.filename}`;
+      const url = `${import.meta.env.VITE_URL_PODCAST}/audio/${data.filename}`;
       audioRef.current.src = url;
       audioRef.current.volume = volumePercent / 100;
       audioRef.current.play();

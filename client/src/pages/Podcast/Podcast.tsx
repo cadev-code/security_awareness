@@ -16,7 +16,7 @@ export const Podcast = () => {
   useEffect(() => {
     const getPodcastsData = async () => {
       try {
-        const url = `${import.meta.env.VITE_URL_API}/posts`;
+        const url = `${import.meta.env.VITE_URL_PODCAST}/posts`;
         const response = await axios.get(url);
         setPodcastData(response.data.data);
       } catch (error) {
