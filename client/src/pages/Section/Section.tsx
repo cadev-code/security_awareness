@@ -123,7 +123,7 @@ export const Section = () => {
           <ImageVisualizer
             image={{
               filename: chapterToView.file_url,
-              url_questions: 'not-url',
+              url_questions: chapterToView.questions_url,
             }}
             close={() => setChapterToView(null)}
           />
