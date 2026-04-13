@@ -7,4 +7,5 @@ export interface Chapter {
   file_url: string;
   file_type: 'VIDEO' | 'IMAGE' | 'AUDIO';
   availability: Date;
+  questions_url: string;
 }
