@@ -7,10 +7,13 @@ import type { Section as SectionType } from '@/types/section.types';
 import type { Chapter } from '@/types/chapter.types';
 import { ChapterCard } from './ChapterCard/ChapterCard';
 import { SquareChevronLeft, SquareChevronRight } from 'lucide-react';
+import { VideoPlayer } from './VideoPlayer/VideoPlayer';
+import { ImageVisualizer } from './ImageVisualizer/ImageVisualizer';
 
 export const Section = () => {
   const [section, setSection] = useState<SectionType | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [chapterToView, setChapterToView] = useState<Chapter | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
@@ -60,6 +63,7 @@ export const Section = () => {
           draggable={false}
         />
       )}
+
       {page > 1 && (
         <div
           className="z-2 text-gray-300 hover:text-white rounded-lg cursor-pointer transition-all hover:scale-110"
@@ -73,6 +77,7 @@ export const Section = () => {
           <SquareChevronLeft size={64} />
         </div>
       )}
+
       {chapters
         .slice((page - 1) * itemsPerPage, page * itemsPerPage)
         .map((chapter) => (
@@ -83,20 +88,14 @@ export const Section = () => {
               const today = new Date();
               const formattedAvailability = new Date(chapter.availability);
               if (today >= formattedAvailability) {
-                // if (
-                //   data.title !== 'Exploradores de Riesgos (Bonus)' &&
-                //   data.title !== 'Bonus 2: Newsletter'
-                // ) {
-                //   openVideoPlayer(data.filename, data.url_questions);
-                // } else {
-                //   openImageVisualizer(data);
-                // }
+                setChapterToView(chapter);
               }
             }}
           >
             <ChapterCard chapter={chapter} />
           </div>
         ))}
+
       {page < totalPages && (
         <div
           className="z-2 text-gray-300 hover:text-white rounded-lg cursor-pointer transition-all hover:scale-110"
@@ -110,23 +109,32 @@ export const Section = () => {
           <SquareChevronRight size={64} />
         </div>
       )}
-      {/* {videoToPlay.reproduce && (
-        <div className="fixed top-0 left-0 w-full h-[calc(100vh)] bg-black/60 flex justify-center items-center z-2">
-          <VideoPlayer
-            url_video={videoToPlay.url_video}
-            close={closeVideoPlayer}
-            url_questions={videoToPlay.url_questions}
+
+      {chapterToView &&
+        (chapterToView.file_type === 'VIDEO' ? (
+          <div className="fixed top-0 left-0 w-full h-[calc(100vh)] bg-black/60 flex justify-center items-center z-2">
+            <VideoPlayer
+              url_video={chapterToView.file_url}
+              close={() => setChapterToView(null)}
+              url_questions={'not-url'}
+            />
+          </div>
+        ) : (
+          <ImageVisualizer
+            image={{
+              filename: chapterToView.file_url,
+              url_questions: 'not-url',
+            }}
+            close={() => setChapterToView(null)}
           />
-        </div>
-      )}
-      {imageToShow && (
-        <ImageVisualizer image={imageToShow} close={closeImageVisualizer} />
-      )} */}
+        ))}
+
       <img
         className="w-48 [@media(min-width:1400px)]:w-60 absolute right-10 bottom-6 z-1"
         src="/images/logo.png"
         draggable={false}
       />
+
       {section?.flag_url && (
         <img
           className="w-86 [@media(min-width:1400px)]:w-120 absolute left-6 bottom-8 [@media(min-width:1400px)]:left-16 [@media(min-width:1400px)]:bottom-18 z-1"
