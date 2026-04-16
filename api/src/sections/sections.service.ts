@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { writeFile } from 'fs/promises';
 import { join, extname } from 'path';
 import { randomUUID } from 'crypto';
@@ -19,6 +19,16 @@ export class SectionsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createSectionDto: CreateSectionDto, files: CreateSectionFiles) {
+    const existingSectionWithName = await this.prisma.section.findFirst({
+      where: { name: createSectionDto.name },
+    });
+
+    if (existingSectionWithName) {
+      throw new ConflictException(
+        `Section with name "${createSectionDto.name}" already exists.`,
+      );
+    }
+
     const bgExt = extname(files.bgFile.originalname);
     const subtitleExt = extname(files.subtitleFile.originalname);
 
@@ -38,8 +48,8 @@ export class SectionsService {
       data: {
         name: createSectionDto.name,
         bg_color: createSectionDto.bg_color,
-        bg_url: `/static/backgrounds/${bgFileName}`,
-        flag_url: `/static/subtitles/${subtitleFileName}`,
+        bg_url: bgFileName,
+        flag_url: subtitleFileName,
       },
     });
   }
