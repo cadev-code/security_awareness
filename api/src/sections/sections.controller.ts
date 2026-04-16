@@ -75,8 +75,32 @@ export class SectionsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSectionDto: UpdateSectionDto) {
-    return this.sectionsService.update(+id, updateSectionDto);
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'bg_file', maxCount: 1 },
+      { name: 'subtitle_file', maxCount: 1 },
+    ]),
+  )
+  async update(
+    @Param('id') id: string,
+    @Body() updateSectionDto: UpdateSectionDto,
+    @UploadedFiles() files?: SectionUploadedFiles,
+  ) {
+    const bgFile = files?.bg_file?.[0];
+    const subtitleFile = files?.subtitle_file?.[0];
+
+    if (bgFile) {
+      await this.imageFilePipe.transform(bgFile);
+    }
+
+    if (subtitleFile) {
+      await this.imageFilePipe.transform(subtitleFile);
+    }
+
+    return this.sectionsService.update(+id, updateSectionDto, {
+      bgFile,
+      subtitleFile,
+    });
   }
 
   @Delete(':id')

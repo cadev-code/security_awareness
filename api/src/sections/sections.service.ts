@@ -6,10 +6,16 @@ import type { Express } from 'express';
 import { CreateSectionDto } from './dto/create-section.dto';
 import { UpdateSectionDto } from './dto/update-section.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 type CreateSectionFiles = {
   bgFile: Express.Multer.File;
   subtitleFile: Express.Multer.File;
+};
+
+type UpdateSectionFiles = {
+  bgFile?: Express.Multer.File;
+  subtitleFile?: Express.Multer.File;
 };
 
 const STATIC_DIR = join(__dirname, '..', '..', 'static');
@@ -66,8 +72,53 @@ export class SectionsService {
     });
   }
 
-  update(id: number, updateSectionDto: UpdateSectionDto) {
-    return `This action updates a #${id} section`;
+  async update(
+    id: number,
+    updateSectionDto: UpdateSectionDto,
+    files: UpdateSectionFiles,
+  ) {
+    const existingSection = await this.prisma.section.findUnique({
+      where: { id },
+    });
+
+    if (!existingSection) {
+      throw new ConflictException(`Sección inexistente.`);
+    }
+
+    const data: Prisma.SectionUpdateInput = {
+      ...updateSectionDto,
+    };
+
+    if (files.bgFile) {
+      await unlink(join(STATIC_DIR, 'backgrounds', existingSection.bg_url));
+
+      const bgExt = extname(files.bgFile.originalname);
+      const bgFileName = `${randomUUID()}${bgExt}`;
+      await writeFile(
+        join(STATIC_DIR, 'backgrounds', bgFileName),
+        files.bgFile.buffer,
+      );
+      data.bg_url = bgFileName;
+    }
+
+    if (files.subtitleFile) {
+      await unlink(join(STATIC_DIR, 'subtitles', existingSection.flag_url));
+
+      const subtitleExt = extname(files.subtitleFile.originalname);
+      const subtitleFileName = `${randomUUID()}${subtitleExt}`;
+      await writeFile(
+        join(STATIC_DIR, 'subtitles', subtitleFileName),
+        files.subtitleFile.buffer,
+      );
+      data.flag_url = subtitleFileName;
+    }
+
+    await this.prisma.section.update({
+      where: { id },
+      data,
+    });
+
+    return `Sección actualizada exitosamente.`;
   }
 
   async remove(id: number) {
