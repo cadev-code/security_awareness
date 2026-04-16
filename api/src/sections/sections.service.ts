@@ -1,5 +1,5 @@
 import { Injectable, ConflictException } from '@nestjs/common';
-import { writeFile } from 'fs/promises';
+import { writeFile, unlink } from 'fs/promises';
 import { join, extname } from 'path';
 import { randomUUID } from 'crypto';
 import type { Express } from 'express';
@@ -25,7 +25,7 @@ export class SectionsService {
 
     if (existingSectionWithName) {
       throw new ConflictException(
-        `Section with name "${createSectionDto.name}" already exists.`,
+        `Sección con nombre "${createSectionDto.name}" ya existe.`,
       );
     }
 
@@ -44,7 +44,7 @@ export class SectionsService {
       files.subtitleFile.buffer,
     );
 
-    return this.prisma.section.create({
+    await this.prisma.section.create({
       data: {
         name: createSectionDto.name,
         bg_color: createSectionDto.bg_color,
@@ -52,6 +52,8 @@ export class SectionsService {
         flag_url: subtitleFileName,
       },
     });
+
+    return `Sección "${createSectionDto.name}" creada exitosamente.`;
   }
 
   findAll() {
@@ -68,7 +70,22 @@ export class SectionsService {
     return `This action updates a #${id} section`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} section`;
+  async remove(id: number) {
+    const existingSection = await this.prisma.section.findUnique({
+      where: { id },
+    });
+
+    if (!existingSection) {
+      throw new ConflictException(`Sección inexistente.`);
+    }
+
+    await unlink(join(STATIC_DIR, 'backgrounds', existingSection.bg_url));
+    await unlink(join(STATIC_DIR, 'subtitles', existingSection.flag_url));
+
+    await this.prisma.section.delete({
+      where: { id },
+    });
+
+    return `Sección #${id} eliminada exitosamente.`;
   }
 }
