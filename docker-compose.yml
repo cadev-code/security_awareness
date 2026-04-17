@@ -7,19 +7,6 @@ services:
       - 3306:3306
     networks:
       - sa_network
-  server:
-    build: ./server
-    image: server_security_awareness
-    container_name: server_sa
-    ports:
-      - 8089:8089
-    volumes:
-      - ./server:/app
-      - /app/node_modules
-    depends_on:
-      - db
-    networks:
-      - sa_network
   api:
     build: ./api
     image: api_security_awareness
