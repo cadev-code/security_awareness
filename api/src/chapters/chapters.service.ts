@@ -4,7 +4,7 @@ import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { extname, join } from 'path';
 import { randomUUID } from 'crypto';
-import { writeFile } from 'fs/promises';
+import { unlink, writeFile } from 'fs/promises';
 
 type CreateChapterFiles = {
   coverFile: Express.Multer.File;
@@ -87,7 +87,22 @@ export class ChaptersService {
     return `This action updates a #${id} chapter`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} chapter`;
+  async remove(id: number) {
+    const existingChapter = await this.prisma.chapter.findUnique({
+      where: { id },
+    });
+
+    if (!existingChapter) {
+      throw new ConflictException('El capítulo especificado no existe');
+    }
+
+    await unlink(join(STATIC_DIR, 'covers', existingChapter.cover_url));
+    await unlink(join(STATIC_DIR, 'chapters', existingChapter.file_url));
+
+    await this.prisma.chapter.delete({
+      where: { id },
+    });
+
+    return `Capítulo ${existingChapter.name} eliminado exitosamente`;
   }
 }
