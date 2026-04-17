@@ -11,12 +11,14 @@ import {
   ParseFilePipeBuilder,
   UploadedFiles,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import type { Express } from 'express';
 import { SectionsService } from './sections.service';
 import { CreateSectionDto } from './dto/create-section.dto';
 import { UpdateSectionDto } from './dto/update-section.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 type SectionUploadedFiles = {
   bg_file?: Express.Multer.File[];
@@ -35,6 +37,7 @@ export class SectionsController {
       errorHttpStatusCode: 422,
     });
 
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -74,6 +77,7 @@ export class SectionsController {
     return this.sectionsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -103,6 +107,7 @@ export class SectionsController {
     });
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.sectionsService.remove(+id);

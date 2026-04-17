@@ -10,10 +10,12 @@ import {
   UseInterceptors,
   UploadedFiles,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '../auth/auth.guard';
 
 type ChapterUploadedFiles = {
   cover_file?: Express.Multer.File[];
@@ -42,6 +44,7 @@ export class ChaptersController {
       errorHttpStatusCode: 422,
     });
 
+  @UseGuards(AuthGuard)
   @Post()
   @UseInterceptors(
     FileFieldsInterceptor([
@@ -81,6 +84,7 @@ export class ChaptersController {
     return this.chaptersService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.chaptersService.remove(+id);
