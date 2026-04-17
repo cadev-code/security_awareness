@@ -1,8 +1,15 @@
 import { Layout } from '@/components';
 import { Router } from '@/routes';
+import { useLocation } from 'react-router';
 
 const App = () => {
-  return <Layout children={<Router />} />;
+  const location = useLocation();
+
+  return location.pathname.startsWith('/admin') ? (
+    <Router />
+  ) : (
+    <Layout children={<Router />} />
+  );
 };
 
 export default App;
