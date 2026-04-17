@@ -17,7 +17,7 @@ export const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
       <div className="relative">
         <img
           className="w-full rounded-lg"
-          src={`${import.meta.env.VITE_URL_STATIC}/video/covers/${chapter.cover_url}`}
+          src={`${import.meta.env.VITE_URL_STATIC}/covers/${chapter.cover_url}`}
           style={{ opacity: today >= formatAvailabilityDate ? '1' : '0.7' }}
           draggable={false}
         />

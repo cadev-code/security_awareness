@@ -31,7 +31,7 @@ export const ImageVisualizer = ({
       <img
         className="w-[60vw] h-auto"
         draggable={false}
-        src={`${import.meta.env.VITE_URL_STATIC}/video/${image.filename}`}
+        src={`${import.meta.env.VITE_URL_STATIC}/chapters/${image.filename}`}
       />
     </div>
   );
