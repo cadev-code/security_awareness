@@ -4,6 +4,8 @@ import { join } from 'path';
 import { PrismaModule } from './prisma/prisma.module';
 import { SectionsModule } from './sections/sections.module';
 import { ChaptersModule } from './chapters/chapters.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { ChaptersModule } from './chapters/chapters.module';
     PrismaModule,
     SectionsModule,
     ChaptersModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [],
   providers: [],
