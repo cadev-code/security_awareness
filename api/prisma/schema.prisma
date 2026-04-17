@@ -26,7 +26,7 @@ model Section {
 model Chapter {
   id            Int      @id @default(autoincrement())
   section_id    Int
-  name          String   @unique
+  name          String   
   showName      Boolean  @default(false)
   cover_url     String
   file_url      String
@@ -36,6 +36,7 @@ model Chapter {
   questions_url String   @default("not-url")
 
   Section Section @relation(fields: [section_id], references: [id])
+  @@unique([name, section_id])
 }
 
 enum FileType {
