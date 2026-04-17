@@ -1,6 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateChapterDto } from './dto/create-chapter.dto';
-import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { extname, join } from 'path';
 import { randomUUID } from 'crypto';
@@ -81,10 +80,6 @@ export class ChaptersService {
         section_id: id,
       },
     });
-  }
-
-  update(id: number, updateChapterDto: UpdateChapterDto) {
-    return `This action updates a #${id} chapter`;
   }
 
   async remove(id: number) {

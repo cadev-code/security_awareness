@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ParseFilePipe,
@@ -14,7 +13,6 @@ import {
 } from '@nestjs/common';
 import { ChaptersService } from './chapters.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
-import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 type ChapterUploadedFiles = {
@@ -81,11 +79,6 @@ export class ChaptersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.chaptersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateChapterDto: UpdateChapterDto) {
-    return this.chaptersService.update(+id, updateChapterDto);
   }
 
   @Delete(':id')
