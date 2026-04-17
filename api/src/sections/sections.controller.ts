@@ -51,7 +51,7 @@ export class SectionsController {
 
     if (!bgFile || !subtitleFile) {
       throw new BadRequestException(
-        'bg_file and subtitle_file are required files',
+        'Archivo de fondo y archivo de subtítulo son requeridos',
       );
     }
 
