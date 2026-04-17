@@ -29,9 +29,12 @@ services:
     volumes:
       - ./api:/app
       - /app/node_modules
+    env_file:
+      - ./api/.env
     environment:
       - NODE_ENV=development
       - DATABASE_URL=mysql://root:root@db_sa:3306/security_awareness
+      - SECRET_JWT=${SECRET_JWT:-your_secret_key_here}
     depends_on:
       - db
     networks:
