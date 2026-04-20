@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { useAddSection } from '@/admin/hooks/useAddSection';
+import { useUpdateSection } from '@/admin/hooks/useUpdateSection';
 
 interface Props {
   editSection: Section | null;
@@ -57,6 +58,11 @@ const addSectionSchema = defaultSchema.extend({
   subtitle_image: imageFileSchema,
 });
 
+const updateSectionSchema = defaultSchema.extend({
+  bg_image: imageFileSchema.nullable(),
+  subtitle_image: imageFileSchema.nullable(),
+});
+
 export const SectionEditorDialog = ({
   editSection,
   isOpen,
@@ -65,7 +71,7 @@ export const SectionEditorDialog = ({
   const isEdit = !!editSection;
 
   const addSection = useAddSection(onClose);
-  // TODO: add updateUser hook
+  const updateSection = useUpdateSection(onClose);
 
   const form = useForm({
     defaultValues: {
@@ -75,24 +81,20 @@ export const SectionEditorDialog = ({
       subtitle_image: null as File | null,
     },
     validators: {
-      onSubmit: addSectionSchema,
-      onChange: addSectionSchema,
+      onSubmit: editSection ? updateSectionSchema : addSectionSchema,
+      onChange: editSection ? updateSectionSchema : addSectionSchema,
     },
     onSubmit: (values) => {
       if (isEdit) {
-        // TODO: add updateUser.mutate
-        // updateUser.mutate(
-        //   {
-        //     userId: editUser.id,
-        //     fullname: values.value.fullname,
-        //     role: values.value.role,
-        //   },
-        //   {
-        //     onSuccess: () => {
-        //       onClose();
-        //     },
-        //   },
-        // );
+        const { bg_image, subtitle_image, ...rest } = values.value;
+
+        const data = {
+          ...rest,
+          ...(bg_image instanceof File ? { bg_image } : {}),
+          ...(subtitle_image instanceof File ? { subtitle_image } : {}),
+        };
+
+        updateSection.mutate({ sectionId: editSection.id, ...data });
       } else {
         const { bg_image, subtitle_image, ...rest } = values.value;
 

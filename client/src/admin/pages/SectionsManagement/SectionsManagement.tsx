@@ -30,7 +30,7 @@ import { useState } from 'react';
 
 export const SectionsManagement = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [editSection, setEditSection] = useState(null);
+  const [editSection, setEditSection] = useState<Section | null>(null);
 
   const { data: sections } = useSections();
 
@@ -72,7 +72,7 @@ export const SectionsManagement = () => {
     {
       id: 'actions',
       header: () => <div className="text-end pr-2">Acciones</div>,
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex items-center justify-end gap-1">
           <>
             <Tooltip>
@@ -81,6 +81,7 @@ export const SectionsManagement = () => {
                   className="cursor-pointer text-blue-700"
                   variant="ghost"
                   size="icon"
+                  onClick={() => setEditSection(row.original)}
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -188,7 +189,7 @@ export const SectionsManagement = () => {
       </div>
 
       <SectionEditorDialog
-        isOpen={isEditorOpen}
+        isOpen={isEditorOpen || editSection !== null}
         onClose={() => {
           setIsEditorOpen(false);
           setEditSection(null);
