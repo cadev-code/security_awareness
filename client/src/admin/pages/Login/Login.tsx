@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/card';
 import { FieldGroup, Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import axios from 'axios';
 
 const formSchema = z.object({
   username: z
@@ -30,9 +31,7 @@ const formSchema = z.object({
 export const Login = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  // const navigate = useNavigate();
-
-  // const login = useLogin();
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: {
@@ -43,13 +42,19 @@ export const Login = () => {
       onSubmit: formSchema,
       onChange: formSchema,
     },
-    // onSubmit: (values) => {
-    //   login.mutate(values.value, {
-    //     onSuccess: () => {
-    //       navigate('/');
-    //     },
-    //   });
-    // },
+    onSubmit: async (values) => {
+      try {
+        console.log(values);
+        await axios.post(
+          `${import.meta.env.VITE_URL_API}/auth/login`,
+          values.value,
+          { withCredentials: true },
+        );
+        navigate('/admin/sections-management');
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+      }
+    },
   });
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
