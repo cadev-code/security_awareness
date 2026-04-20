@@ -25,8 +25,13 @@ import {
 } from '@/components/ui/tooltip';
 
 import { Image, LayoutTemplate, Pencil, Plus, Trash } from 'lucide-react';
+import { SectionEditorDialog } from '@/admin/components/SectionEditorDialog/SectionEditorDialog';
+import { useState } from 'react';
 
 export const SectionsManagement = () => {
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [editSection, setEditSection] = useState(null);
+
   const { data: sections } = useSections();
 
   const columns: ColumnDef<Section>[] = [
@@ -129,7 +134,7 @@ export const SectionsManagement = () => {
             Administra las secciones del sistema Security Awareness.
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setIsEditorOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Nueva Sección
         </Button>
@@ -181,6 +186,15 @@ export const SectionsManagement = () => {
           </TableBody>
         </Table>
       </div>
+
+      <SectionEditorDialog
+        isOpen={isEditorOpen}
+        onClose={() => {
+          setIsEditorOpen(false);
+          setEditSection(null);
+        }}
+        editSection={editSection}
+      />
     </div>
   );
 };
