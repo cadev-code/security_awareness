@@ -33,16 +33,16 @@ export const poster = async <T, B = unknown>(
   }
 };
 
-export const putter = async <T, B = unknown>(
+export const patcher = async <T, B = unknown>(
   url: string,
   body?: B,
 ): Promise<T> => {
   try {
-    const { data } = await axiosClient.put<T>(url, body);
+    const { data } = await axiosClient.patch<T>(url, body);
     return data;
   } catch (error) {
     if (error instanceof AxiosError && !error.status) {
-      console.error('Putting error', {
+      console.error('Patching error', {
         message: error.message,
       });
     }
