@@ -44,7 +44,6 @@ export const Login = () => {
     },
     onSubmit: async (values) => {
       try {
-        console.log(values);
         await axios.post(
           `${import.meta.env.VITE_URL_API}/auth/login`,
           values.value,
