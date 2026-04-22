@@ -8,6 +8,7 @@ import { Login } from '@/admin/pages/Login/Login';
 import { SectionsManagement } from '@/admin/pages/SectionsManagement/SectionsManagement';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
+import { ChaptersManagement } from '@/admin/pages/ChaptersManagement/ChaptersManagement';
 
 export const Router = () => {
   return (
@@ -25,6 +26,11 @@ export const Router = () => {
       <Route
         path="admin/sections-management"
         element={<ProtectedRoute element={<SectionsManagement />} />}
+      />
+
+      <Route
+        path="admin/chapters-management"
+        element={<ProtectedRoute element={<ChaptersManagement />} />}
       />
 
       <Route path="/*" element={<Navigate to="/home" />} />

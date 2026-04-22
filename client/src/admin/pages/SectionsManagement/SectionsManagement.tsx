@@ -27,12 +27,15 @@ import {
 import { Image, LayoutTemplate, Pencil, Plus, Trash } from 'lucide-react';
 import { SectionEditorDialog } from '@/admin/components/SectionEditorDialog/SectionEditorDialog';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 export const SectionsManagement = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editSection, setEditSection] = useState<Section | null>(null);
 
   const { data: sections } = useSections();
+
+  const navigate = useNavigate();
 
   const columns: ColumnDef<Section>[] = [
     {
@@ -107,9 +110,17 @@ export const SectionsManagement = () => {
     {
       id: 'chapters',
       header: () => <div className="text-end pr-8">Capítulos</div>,
-      cell: () => (
+      cell: ({ row }) => (
         <div className="flex justify-end pr-2">
-          <Button className="cursor-pointer" variant="ghost">
+          <Button
+            className="cursor-pointer"
+            variant="ghost"
+            onClick={() =>
+              navigate(
+                `/admin/chapters-management?sectionId=${row.original.id}`,
+              )
+            }
+          >
             Ver Capítulos
           </Button>
         </div>
