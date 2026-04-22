@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import axios from 'axios';
 
@@ -15,27 +15,37 @@ export const Section = () => {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [chapterToView, setChapterToView] = useState<Chapter | null>(null);
 
+  const navigate = useNavigate();
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get('page') || 1);
+  const page = Number(searchParams.get('page') || 0);
   const itemsPerPage = 4;
   const totalPages = Math.ceil(chapters.length / itemsPerPage);
 
   const sectionId = Number(searchParams.get('id'));
 
-  const getSection = async (sectionId: number) => {
-    try {
-      const url = `${import.meta.env.VITE_URL_API}/sections/${sectionId}`;
-      const response = await axios.get(url);
-      setSection(response.data);
-    } catch (error) {
-      setSection(null);
-      console.error('Error al obtener sección:', error);
-    }
-  };
+  const getSection = useCallback(
+    async (sectionId: number) => {
+      try {
+        const url = `${import.meta.env.VITE_URL_API}/sections/${sectionId}`;
+        const response = await axios.get(url);
+
+        if (!response.data.id) {
+          navigate('/home');
+        }
+
+        setSection(response.data);
+      } catch (error) {
+        setSection(null);
+        console.error('Error al obtener sección:', error);
+      }
+    },
+    [navigate],
+  );
 
   useEffect(() => {
     getSection(sectionId);
-  }, [sectionId]);
+  }, [sectionId, getSection]);
 
   const getChapters = async (sectionId: number) => {
     try {
