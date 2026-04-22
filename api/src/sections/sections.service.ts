@@ -130,6 +130,21 @@ export class SectionsService {
       throw new ConflictException(`Sección inexistente.`);
     }
 
+    const chapterFiles = await this.prisma.chapter.findMany({
+      where: { section_id: id },
+      select: {
+        cover_url: true,
+        file_url: true,
+      },
+    });
+
+    await Promise.all(
+      chapterFiles.flatMap((chapter) => [
+        unlink(join(STATIC_DIR, 'covers', chapter.cover_url)),
+        unlink(join(STATIC_DIR, 'chapters', chapter.file_url)),
+      ]),
+    );
+
     await unlink(join(STATIC_DIR, 'backgrounds', existingSection.bg_url));
     await unlink(join(STATIC_DIR, 'subtitles', existingSection.flag_url));
 
