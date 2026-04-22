@@ -35,7 +35,7 @@ model Chapter {
   created_at    DateTime @default(now())
   questions_url String   @default("not-url")
 
-  Section Section @relation(fields: [section_id], references: [id])
+  Section Section @relation(fields: [section_id], references: [id], onDelete: Cascade)
 
   @@unique([name, section_id])
 }
