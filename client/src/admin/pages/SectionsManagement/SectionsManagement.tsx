@@ -28,12 +28,15 @@ import { Image, LayoutTemplate, Pencil, Plus, Trash } from 'lucide-react';
 import { SectionEditorDialog } from '@/admin/components/SectionEditorDialog/SectionEditorDialog';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { DeleteConfirmDialog } from '@/admin/components/DeleteConfirmDialog/DeleteConfirmDialog';
+import { useDeleteSection } from '@/admin/hooks/useDeleteSection';
 
 export const SectionsManagement = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editSection, setEditSection] = useState<Section | null>(null);
 
   const { data: sections } = useSections();
+  const deleteSection = useDeleteSection();
 
   const navigate = useNavigate();
 
@@ -93,13 +96,21 @@ export const SectionsManagement = () => {
             </Tooltip>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  className="cursor-pointer text-destructive"
-                  variant="ghost"
-                  size="icon"
-                >
-                  <Trash className="h-4 w-4" />
-                </Button>
+                <DeleteConfirmDialog
+                  deleteBtn={
+                    <Button
+                      className="cursor-pointer text-destructive"
+                      variant="ghost"
+                      size="icon"
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  }
+                  item={row.original.name}
+                  onConfirm={() =>
+                    deleteSection.mutate({ sectionId: row.original.id })
+                  }
+                />
               </TooltipTrigger>
               <TooltipContent>Eliminar Sección</TooltipContent>
             </Tooltip>
