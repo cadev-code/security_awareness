@@ -46,14 +46,14 @@ export const ChaptersManagement = () => {
 
   const navigate = useNavigate();
 
+  const { data: section, isLoading } = useSectionById(Number(sectionId));
+  const { data: chapters } = useChaptersBySection(Number(sectionId));
+
   useEffect(() => {
-    if (sectionId === '0') {
+    if (sectionId === '0' || (sectionId !== '0' && !section && !isLoading)) {
       navigate('/admin/sections-management');
     }
-  }, [sectionId, navigate]);
-
-  const { data: section } = useSectionById(Number(sectionId));
-  const { data: chapters } = useChaptersBySection(Number(sectionId));
+  }, [sectionId, navigate, section, isLoading]);
 
   const columns: ColumnDef<Chapter>[] = [
     {
