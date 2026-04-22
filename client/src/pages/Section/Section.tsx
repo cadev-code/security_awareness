@@ -18,7 +18,7 @@ export const Section = () => {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get('page') || 0);
+  const page = Number(searchParams.get('page') || 1);
   const itemsPerPage = 4;
   const totalPages = Math.ceil(chapters.length / itemsPerPage);
 
