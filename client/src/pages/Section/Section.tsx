@@ -126,7 +126,7 @@ export const Section = () => {
             <VideoPlayer
               url_video={chapterToView.file_url}
               close={() => setChapterToView(null)}
-              url_questions={'not-url'}
+              url_questions={chapterToView.questions_url}
             />
           </div>
         ) : (

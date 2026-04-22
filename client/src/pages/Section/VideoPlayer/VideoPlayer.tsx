@@ -23,6 +23,7 @@ export const VideoPlayer = ({
   url_questions: string;
   close: () => void;
 }) => {
+  console.log(url_questions);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -153,7 +154,7 @@ export const VideoPlayer = ({
           onClick={onPlayingChange}
         >
           <source
-            src={`${import.meta.env.VITE_URL_STATIC}/video/${url_video}`}
+            src={`${import.meta.env.VITE_URL_STATIC}/chapters/${url_video}`}
             type="video/mp4"
           />
         </video>
@@ -200,18 +201,22 @@ export const VideoPlayer = ({
       </div>
       {/* cuestionario */}
       <div className="w-full flex justify-between items-center">
-        <a
-          className="bg-green-700 rounded py-1 px-2 font-medium text-sm [@media(min-width:1400px)]:text-lg [@media(min-width:1400px)]:rounded-md cursor-pointer"
-          style={{ backgroundColor: '#327ac2' }}
-          href={url_questions}
-          target="_blank"
-        >
-          <span>Responder Cuestionario</span>
-        </a>
-        {showQuestionsAlert && (
-          <div className="bg-white text-black py-1 px-2 rounded">
-            Cargando cuestionario...
-          </div>
+        {url_questions !== 'not-url' && (
+          <>
+            <a
+              className="bg-green-700 rounded py-1 px-2 font-medium text-sm [@media(min-width:1400px)]:text-lg [@media(min-width:1400px)]:rounded-md cursor-pointer"
+              style={{ backgroundColor: '#327ac2' }}
+              href={url_questions}
+              target="_blank"
+            >
+              <span>Responder Cuestionario</span>
+            </a>
+            {showQuestionsAlert && (
+              <div className="bg-white text-black py-1 px-2 rounded">
+                Cargando cuestionario...
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
