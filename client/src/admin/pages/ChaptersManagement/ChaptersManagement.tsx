@@ -1,3 +1,5 @@
+import { ChapterEditorDialog } from '@/admin/components/ChapterEditorDialog/ChapterEditorDialog';
+import { formatDate } from '@/admin/helpers/formatDate';
 import { useChaptersBySection } from '@/admin/hooks/useChaptersBySection';
 import { useSectionById } from '@/admin/hooks/useSectionById';
 import { Button } from '@/components/ui/button';
@@ -32,23 +34,13 @@ import {
   Video,
   Volume2,
 } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-const formatDate = (dateString: string) => {
-  const [year, month, day] = dateString.split('T')[0].split('-');
-  return new Date(
-    Number(year),
-    Number(month) - 1,
-    Number(day),
-  ).toLocaleDateString('es-ES', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-};
-
 export const ChaptersManagement = () => {
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [editChapter, setEditChapter] = useState<Chapter | null>(null);
+
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get('sectionId') || '0';
 
@@ -168,7 +160,7 @@ export const ChaptersManagement = () => {
             Sección: <strong>{section?.name}</strong>
           </p>
         </div>
-        <Button>
+        <Button onClick={() => setIsEditorOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Agregar Capítulo
         </Button>
@@ -220,6 +212,15 @@ export const ChaptersManagement = () => {
           </TableBody>
         </Table>
       </div>
+
+      <ChapterEditorDialog
+        isOpen={isEditorOpen || editChapter !== null}
+        onClose={() => {
+          setIsEditorOpen(false);
+          setEditChapter(null);
+        }}
+        editChapter={editChapter}
+      />
     </div>
   );
 };
