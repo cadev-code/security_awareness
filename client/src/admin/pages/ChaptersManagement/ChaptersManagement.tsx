@@ -2,6 +2,7 @@ import { ChapterEditorDialog } from '@/admin/components/ChapterEditorDialog/Chap
 import { DeleteConfirmDialog } from '@/admin/components/DeleteConfirmDialog/DeleteConfirmDialog';
 import { formatDate } from '@/admin/helpers/formatDate';
 import { useChaptersBySection } from '@/admin/hooks/useChaptersBySection';
+import { useDeleteChapter } from '@/admin/hooks/useDeleteChapter';
 import { useSectionById } from '@/admin/hooks/useSectionById';
 import { Button } from '@/components/ui/button';
 import {
@@ -49,6 +50,7 @@ export const ChaptersManagement = () => {
 
   const { data: section, isLoading } = useSectionById(Number(sectionId));
   const { data: chapters } = useChaptersBySection(Number(sectionId));
+  const deleteChapter = useDeleteChapter();
 
   useEffect(() => {
     if (sectionId === '0' || (sectionId !== '0' && !section && !isLoading)) {
@@ -151,7 +153,9 @@ export const ChaptersManagement = () => {
                 }
                 item={row.original.name}
                 // TODO: agregar on confirm para eliminar capítulo
-                onConfirm={() => {}}
+                onConfirm={() => {
+                  deleteChapter.mutate({ chapterId: row.original.id });
+                }}
               />
             </TooltipTrigger>
             <TooltipContent>Eliminar Sección</TooltipContent>
