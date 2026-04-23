@@ -37,6 +37,7 @@ export class AuthController {
       httpOnly: true,
       secure: false,
       sameSite: 'lax',
+      path: '/',
       maxAge: 1000 * 60 * 60 * 24,
     });
 
@@ -53,7 +54,12 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('access_token');
+    response.clearCookie('access_token', {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      path: '/',
+    });
     return { message: 'Sesión cerrada correctamente' };
   }
 }
