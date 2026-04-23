@@ -48,4 +48,12 @@ export class AuthController {
   getProfile(@Req() req: AuthenticatedRequest): Record<string, unknown> {
     return req.user;
   }
+
+  @UseGuards(AuthGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('access_token');
+    return { message: 'Sesión cerrada correctamente' };
+  }
 }
