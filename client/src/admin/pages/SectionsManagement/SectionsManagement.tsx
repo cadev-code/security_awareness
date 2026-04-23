@@ -30,6 +30,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { DeleteConfirmDialog } from '@/admin/components/DeleteConfirmDialog/DeleteConfirmDialog';
 import { useDeleteSection } from '@/admin/hooks/useDeleteSection';
+import { LogoutBtn } from '@/admin/components/LogoutBtn/LogoutBtn';
 
 export const SectionsManagement = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -147,6 +148,9 @@ export const SectionsManagement = () => {
 
   return (
     <div className="space-y-6 h-screen w-screen p-8 bg-white">
+      <div>
+        <LogoutBtn />
+      </div>
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold flex items-center gap-2">
