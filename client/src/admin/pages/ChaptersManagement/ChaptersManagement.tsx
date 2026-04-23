@@ -1,4 +1,5 @@
 import { ChapterEditorDialog } from '@/admin/components/ChapterEditorDialog/ChapterEditorDialog';
+import { DeleteConfirmDialog } from '@/admin/components/DeleteConfirmDialog/DeleteConfirmDialog';
 import { formatDate } from '@/admin/helpers/formatDate';
 import { useChaptersBySection } from '@/admin/hooks/useChaptersBySection';
 import { useSectionById } from '@/admin/hooks/useSectionById';
@@ -31,6 +32,7 @@ import {
   Plus,
   Puzzle,
   SquareArrowOutUpRight,
+  Trash,
   Video,
   Volume2,
 } from 'lucide-react';
@@ -39,7 +41,6 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 export const ChaptersManagement = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [editChapter, setEditChapter] = useState<Chapter | null>(null);
 
   const [searchParams] = useSearchParams();
   const sectionId = searchParams.get('sectionId') || '0';
@@ -131,6 +132,33 @@ export const ChaptersManagement = () => {
           </Tooltip>
         ),
     },
+    {
+      id: 'actions',
+      header: 'Acciones',
+      cell: ({ row }) => (
+        <div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DeleteConfirmDialog
+                deleteBtn={
+                  <Button
+                    className="cursor-pointer text-destructive"
+                    variant="ghost"
+                    size="icon"
+                  >
+                    <Trash className="h-4 w-4" />
+                  </Button>
+                }
+                item={row.original.name}
+                // TODO: agregar on confirm para eliminar capítulo
+                onConfirm={() => {}}
+              />
+            </TooltipTrigger>
+            <TooltipContent>Eliminar Sección</TooltipContent>
+          </Tooltip>
+        </div>
+      ),
+    },
   ];
 
   const table = useReactTable({
@@ -214,12 +242,10 @@ export const ChaptersManagement = () => {
       </div>
 
       <ChapterEditorDialog
-        isOpen={isEditorOpen || editChapter !== null}
+        isOpen={isEditorOpen}
         onClose={() => {
           setIsEditorOpen(false);
-          setEditChapter(null);
         }}
-        editChapter={editChapter}
       />
     </div>
   );
